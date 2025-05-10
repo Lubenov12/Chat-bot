@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chat-message {
+  @apply mb-4 p-3 rounded-lg max-w-[80%];
+}
+
+.user-message {
+  @apply bg-blue-100 ml-auto;
+}
+
+.bot-message {
+  @apply bg-gray-100;
+}
+
+@keyframes gentle-shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.shake-animation {
+  animation: gentle-shake 0.5s ease-in-out;
+}
