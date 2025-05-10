@@ -6,7 +6,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatOptions = document.getElementById('chat-options');
   let buttonsEnabled = true;
 
-  // Add shake animation every 5-6 seconds
+  // Menu categories and items
+  const menuItems = {
+    'Основни ястия': [
+      { name: 'Пилешка пържола', price: '16.90 лв', description: 'Сочна пилешка пържола с гарнитура от картофи' },
+      { name: 'Свинска вратна пържола', price: '18.90 лв', description: 'Крехка свинска пържола с грилирани зеленчуци' },
+      { name: 'Риба тон', price: '22.90 лв', description: 'Прясна риба тон със сос и задушени зеленчуци' }
+    ],
+    'Салати': [
+      { name: 'Гръцка салата', price: '9.90 лв', description: 'Домати, краставици, маслини, сирене фета' },
+      { name: 'Цезар', price: '12.90 лв', description: 'Айсберг, пиле, крутони, пармезан' },
+      { name: 'Капрезе', price: '11.90 лв', description: 'Домати, моцарела, босилек, зехтин' }
+    ],
+    'Десерти': [
+      { name: 'Тирамису', price: '7.90 лв', description: 'Класическо италианско тирамису' },
+      { name: 'Шоколадово суфле', price: '8.90 лв', description: 'Топло шоколадово суфле с ванилов сладолед' },
+      { name: 'Чийзкейк', price: '6.90 лв', description: 'Домашен чийзкейк с горски плодове' }
+    ]
+  };
+
+  const foodRecommendations = {
+    'вегетарианско': ['Зеленчукова лазаня', 'Къри с нахут', 'Гъби на скара'],
+    'без глутен': ['Печена сьомга със зеленчуци', 'Киноа със зеленчуци', 'Ориз с къри'],
+    'люто': ['Пиле с люти чушки', 'Люто къри', 'Пикантна паста']
+  };
+
   function startShakeInterval() {
     const minInterval = 5000;
     const maxInterval = 6000;
@@ -36,12 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chatWindow.classList.add('hidden');
   });
 
-  const foodRecommendations = {
-    'вегетарианско': ['Зеленчукова лазаня', 'Къри с нахут', 'Гъби на скара'],
-    'без глутен': ['Печена сьомга със зеленчуци', 'Киноа със зеленчуци', 'Ориз с къри'],
-    'люто': ['Пиле с люти чушки', 'Люто къри', 'Пикантна паста']
-  };
-
   function disableButtons() {
     buttonsEnabled = false;
     const buttons = chatOptions.querySelectorAll('button');
@@ -58,6 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function displayMenuItems(category) {
+    const items = menuItems[category];
+    let message = `${category}:\n\n`;
+    items.forEach(item => {
+      message += `${item.name} - ${item.price}\n${item.description}\n\n`;
+    });
+    addMessage(message, 'bot');
+  }
+
   function updateButtons(options) {
     chatOptions.innerHTML = '';
     options.forEach(option => {
@@ -72,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function simulateBotTyping() {
     return new Promise(resolve => {
-      const typingTime = Math.random() * 1000 + 500; // Random typing time between 0.5-1.5 seconds
+      const typingTime = Math.random() * 1000 + 500;
       setTimeout(resolve, typingTime);
     });
   }
@@ -88,8 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch (option) {
       case 'Покажи меню':
-        addMessage('Ето днешните категории в менюто: Основни ястия, Салати, Десерти', 'bot');
+        addMessage('Изберете категория от менюто:', 'bot');
         updateButtons(['Основни ястия', 'Салати', 'Десерти', 'Назад']);
+        break;
+      case 'Основни ястия':
+      case 'Салати':
+      case 'Десерти':
+        displayMenuItems(option);
+        updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
         break;
       case 'Препоръки':
         addMessage('Имате ли хранителни предпочитания?', 'bot');
@@ -122,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender === 'user' ? 'user-message' : 'bot-message');
+    messageDiv.style.whiteSpace = 'pre-line';
     messageDiv.textContent = text;
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
