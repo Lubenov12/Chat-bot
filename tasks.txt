@@ -1,0 +1,21 @@
+Create a simple chat widget that appears in the bottom-right corner of a webpage. The chat should open when the user clicks a floating button. Inside the chat, display a welcome message like "Hi! Need help choosing what to eat?" and provide three buttons: "Show Menu", "Recommendations", and "Ask a Question".
+
+Use HTML, CSS and JavaScript. Make sure it works as a floating chat interface. Keep the design minimal and mobile-friendly.
+
+
+ADD ONS: 
+Build a floating chatbot interface that opens from a button in the bottom-right corner of the page. When opened, it should show a welcome message and three options:
+
+1. Show today's menu
+2. Get a food recommendation
+3. Ask a question
+
+If the user selects "Get a food recommendation", ask "Do you have any dietary preferences or allergies?" and give some sample options (like vegetarian, gluten-free, spicy, etc.).
+
+Use basic JavaScript for the logic, and style the chat with CSS. No backend required.
+
+
+AI Logic: 
+Add a simple AI response function that replies to user input using dummy logic. For example, if the user types "I want something spicy", reply with "You might like our Spicy Chicken Wrap."
+
+Keep it on the frontend using plain JavaScript. No real NLP needed — use if-else logic or keywords.
