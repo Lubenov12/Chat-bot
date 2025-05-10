@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeChat = document.getElementById('close-chat');
   const chatMessages = document.getElementById('chat-messages');
   const chatOptions = document.getElementById('chat-options');
+  let buttonsEnabled = true;
 
   // Add shake animation every 5-6 seconds
   function startShakeInterval() {
@@ -22,42 +23,68 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(shake, nextInterval);
     }
     
-    shake(); // Start immediately
+    shake();
   }
 
   startShakeInterval();
 
-  // Toggle chat window
   chatButton.addEventListener('click', () => {
     chatWindow.classList.toggle('hidden');
   });
 
-  // Close chat window
   closeChat.addEventListener('click', () => {
     chatWindow.classList.add('hidden');
   });
 
-  // Food recommendations based on preferences
   const foodRecommendations = {
     'вегетарианско': ['Зеленчукова лазаня', 'Къри с нахут', 'Гъби на скара'],
     'без глутен': ['Печена сьомга със зеленчуци', 'Киноа със зеленчуци', 'Ориз с къри'],
     'люто': ['Пиле с люти чушки', 'Люто къри', 'Пикантна паста']
   };
 
+  function disableButtons() {
+    buttonsEnabled = false;
+    const buttons = chatOptions.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.disabled = true;
+    });
+  }
+
+  function enableButtons() {
+    buttonsEnabled = true;
+    const buttons = chatOptions.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.disabled = false;
+    });
+  }
+
   function updateButtons(options) {
     chatOptions.innerHTML = '';
     options.forEach(option => {
       const button = document.createElement('button');
-      button.className = 'w-full mb-2 bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 transition-colors';
+      button.className = 'option-button bg-blue-500 text-white hover:bg-blue-600';
       button.textContent = option;
       button.addEventListener('click', handleOptionClick);
+      button.disabled = !buttonsEnabled;
       chatOptions.appendChild(button);
     });
   }
 
-  function handleOptionClick(event) {
+  function simulateBotTyping() {
+    return new Promise(resolve => {
+      const typingTime = Math.random() * 1000 + 500; // Random typing time between 0.5-1.5 seconds
+      setTimeout(resolve, typingTime);
+    });
+  }
+
+  async function handleOptionClick(event) {
+    if (!buttonsEnabled) return;
+    
     const option = event.target.textContent;
     addMessage(option, 'user');
+    disableButtons();
+
+    await simulateBotTyping();
 
     switch (option) {
       case 'Покажи меню':
@@ -88,6 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
           updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
         }
     }
+    
+    enableButtons();
   }
 
   function addMessage(text, sender) {
@@ -98,6 +127,5 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Initialize default buttons
   updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
 });

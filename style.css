@@ -3,15 +3,41 @@
 @tailwind utilities;
 
 .chat-message {
-  @apply mb-4 p-3 rounded-lg max-w-[80%];
+  @apply mb-4 p-3 rounded-2xl max-w-[80%] relative;
 }
 
 .user-message {
-  @apply bg-blue-100 ml-auto;
+  @apply bg-blue-100 ml-auto rounded-br-sm;
+}
+
+.user-message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #dbeafe;
+  transform: rotate(-45deg);
 }
 
 .bot-message {
-  @apply bg-gray-100;
+  @apply bg-gray-100 rounded-bl-sm;
+}
+
+.bot-message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #f3f4f6;
+  transform: rotate(45deg);
 }
 
 @keyframes gentle-shake {
@@ -23,4 +49,12 @@
 
 .shake-animation {
   animation: gentle-shake 0.5s ease-in-out;
+}
+
+.chat-button {
+  @apply rounded-full transition-all duration-300;
+}
+
+.option-button {
+  @apply w-full mb-2 rounded-full px-6 py-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
 }
