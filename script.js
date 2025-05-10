@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(shake, nextInterval);
     }
     
-    setTimeout(shake, 5000);
+    shake(); // Start immediately
   }
 
   startShakeInterval();
@@ -37,26 +37,58 @@ document.addEventListener('DOMContentLoaded', () => {
     chatWindow.classList.add('hidden');
   });
 
-  // Handle option buttons
-  const optionButtons = chatOptions.getElementsByTagName('button');
-  Array.from(optionButtons).forEach(button => {
-    button.addEventListener('click', () => {
-      const option = button.textContent;
-      addMessage(option, 'user');
+  // Food recommendations based on preferences
+  const foodRecommendations = {
+    'вегетарианско': ['Зеленчукова лазаня', 'Къри с нахут', 'Гъби на скара'],
+    'без глутен': ['Печена сьомга със зеленчуци', 'Киноа със зеленчуци', 'Ориз с къри'],
+    'люто': ['Пиле с люти чушки', 'Люто къри', 'Пикантна паста']
+  };
 
-      switch (option) {
-        case 'Покажи меню':
-          addMessage('Ето днешните категории в менюто: Основни ястия, Салати, Десерти', 'bot');
-          break;
-        case 'Препоръки':
-          addMessage('Имате ли хранителни предпочитания или алергии? (Вегетарианско, Без глутен, Люто)', 'bot');
-          break;
-        case 'Задай въпрос':
-          addMessage('Какво искате да знаете за нашата храна?', 'bot');
-          break;
-      }
+  function updateButtons(options) {
+    chatOptions.innerHTML = '';
+    options.forEach(option => {
+      const button = document.createElement('button');
+      button.className = 'w-full mb-2 bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 transition-colors';
+      button.textContent = option;
+      button.addEventListener('click', handleOptionClick);
+      chatOptions.appendChild(button);
     });
-  });
+  }
+
+  function handleOptionClick(event) {
+    const option = event.target.textContent;
+    addMessage(option, 'user');
+
+    switch (option) {
+      case 'Покажи меню':
+        addMessage('Ето днешните категории в менюто: Основни ястия, Салати, Десерти', 'bot');
+        updateButtons(['Основни ястия', 'Салати', 'Десерти', 'Назад']);
+        break;
+      case 'Препоръки':
+        addMessage('Имате ли хранителни предпочитания?', 'bot');
+        updateButtons(['Вегетарианско', 'Без глутен', 'Люто', 'Назад']);
+        break;
+      case 'Задай въпрос':
+        addMessage('Какво искате да знаете за нашата храна?', 'bot');
+        updateButtons(['За алергени', 'За съставки', 'За цени', 'Назад']);
+        break;
+      case 'Назад':
+        updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
+        break;
+      case 'Вегетарианско':
+      case 'Без глутен':
+      case 'Люто':
+        const recommendations = foodRecommendations[option.toLowerCase()];
+        addMessage(`Ето нашите препоръки за вас: ${recommendations.join(', ')}`, 'bot');
+        updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
+        break;
+      default:
+        if (option.startsWith('За ')) {
+          addMessage('Ще ви свържем с наш консултант за повече информация.', 'bot');
+          updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
+        }
+    }
+  }
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
@@ -65,4 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
+
+  // Initialize default buttons
+  updateButtons(['Покажи меню', 'Препоръки', 'Задай въпрос']);
 });
