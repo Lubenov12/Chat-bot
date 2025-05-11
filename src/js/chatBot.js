@@ -10,9 +10,10 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   // Check if this is the first visit
   const hasVisited = localStorage.getItem("hasVisited");
+  
+  // Show popup only on first visit
   if (!hasVisited) {
     popupText.classList.remove("hidden");
-    localStorage.setItem("hasVisited", "true");
   }
 
   function startShakeInterval() {
@@ -40,6 +41,8 @@ export function initChatBot(menuItems, foodRecommendations) {
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
     popupText.classList.add("hidden");
+    // Set hasVisited in localStorage when chat is opened
+    localStorage.setItem("hasVisited", "true");
   });
 
   closeChat.addEventListener("click", () => {
