@@ -9,6 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const popupText = document.getElementById("popup-text");
   let buttonsEnabled = true;
 
+  // Check if this is the first visit
+  const hasVisited = localStorage.getItem("hasVisited");
+  if (!hasVisited) {
+    popupText.classList.remove("hidden");
+    localStorage.setItem("hasVisited", "true");
+  }
+
   // Menu categories and items
   const menuItems = {
     "Основни ястия": [
@@ -79,13 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxInterval = 6000;
 
     function shake() {
-      if (chatWindow.classList.contains("hidden")) {
+      if (chatWindow.classList.contains("hidden") && !hasVisited) {
         chatButton.classList.add("shake-animation");
-        popupText.classList.remove("hidden");
         setTimeout(() => {
           chatButton.classList.remove("shake-animation");
-          popupText.classList.add("hidden");
-        }, 3000);
+        }, 500);
       }
 
       const nextInterval =
