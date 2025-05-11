@@ -6,25 +6,18 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
+  const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
-
-  // Check if this is the first visit
-  const hasVisited = localStorage.getItem("hasVisited");
-  
-  // Show popup only on first visit
-  if (!hasVisited) {
-    popupText.classList.remove("hidden");
-  }
 
   function startShakeInterval() {
     const minInterval = 5000;
     const maxInterval = 6000;
 
     function shake() {
-      if (chatWindow.classList.contains("hidden") && !hasVisited) {
-        chatButton.classList.add("shake-animation");
+      if (chatWindow.classList.contains("hidden")) {
+        chatWidget.classList.add("shake-animation");
         setTimeout(() => {
-          chatButton.classList.remove("shake-animation");
+          chatWidget.classList.remove("shake-animation");
         }, 500);
       }
 
