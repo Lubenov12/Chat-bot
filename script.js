@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeChat = document.getElementById("close-chat");
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
+  const popupText = document.getElementById("popup-text");
   let buttonsEnabled = true;
 
   // Menu categories and items
@@ -80,9 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function shake() {
       if (chatWindow.classList.contains("hidden")) {
         chatButton.classList.add("shake-animation");
+        popupText.classList.remove("hidden");
         setTimeout(() => {
           chatButton.classList.remove("shake-animation");
-        }, 500);
+          popupText.classList.add("hidden");
+        }, 3000);
       }
 
       const nextInterval =
@@ -97,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
+    popupText.classList.add("hidden");
   });
 
   closeChat.addEventListener("click", () => {
