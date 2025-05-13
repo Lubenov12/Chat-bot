@@ -7,7 +7,6 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
   let buttonsEnabled = true;
-  let currentOptions = ["Покажи меню", "Препоръки", "Задай въпрос"];
 
   popupText.classList.remove("hidden");
 
@@ -61,8 +60,8 @@ export function initChatBot(menuItems, foodRecommendations) {
     addMessage(message, "bot");
   }
 
-  function updateButtons(options, force = false) {
-    if (!force && currentOptions !== options) {
+  function updateButtons(options) {
+    if (options[options.length - 1] !== "Назад") {
       return;
     }
     
@@ -75,7 +74,6 @@ export function initChatBot(menuItems, foodRecommendations) {
       button.disabled = !buttonsEnabled;
       chatOptions.appendChild(button);
     });
-    currentOptions = options;
   }
 
   function simulateBotTyping() {
@@ -97,7 +95,7 @@ export function initChatBot(menuItems, foodRecommendations) {
     switch (option) {
       case "Покажи меню":
         addMessage("Изберете категория от менюто:", "bot");
-        updateButtons(["Основни ястия", "Салати", "Десерти", "Назад"], true);
+        updateButtons(["Основни ястия", "Салати", "Десерти", "Назад"]);
         break;
       case "Основни ястия":
       case "Салати":
@@ -106,14 +104,14 @@ export function initChatBot(menuItems, foodRecommendations) {
         break;
       case "Препоръки":
         addMessage("Имате ли хранителни предпочитания?", "bot");
-        updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"], true);
+        updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"]);
         break;
       case "Задай въпрос":
         addMessage("Какво искате да знаете за нашата храна?", "bot");
-        updateButtons(["За алергени", "За съставки", "За цени", "Назад"], true);
+        updateButtons(["За алергени", "За съставки", "За цени", "Назад"]);
         break;
       case "Назад":
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"], true);
+        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       case "Вегетарианско":
       case "Без глутен":
@@ -148,5 +146,5 @@ export function initChatBot(menuItems, foodRecommendations) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"], true);
+  updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
 }
