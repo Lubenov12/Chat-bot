@@ -42,6 +42,7 @@
 
 .popup-bubble {
   position: relative;
+  bottom: 20px;
 }
 
 .popup-bubble::after {
