@@ -6,23 +6,24 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
-  const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
+  let currentOptions = ["Покажи меню", "Препоръки", "Задай въпрос"];
+
+  const hasVisited = localStorage.getItem("hasVisited");
+  if (!hasVisited) {
+    popupText.classList.remove("hidden");
+  }
 
   function startShakeInterval() {
-    const minInterval = 5000;
-    const maxInterval = 6000;
-
     function shake() {
-      if (chatWindow.classList.contains("hidden")) {
-        chatWidget.classList.add("shake-animation");
+      if (chatWindow.classList.contains("hidden") && !hasVisited) {
+        chatButton.classList.add("shake-animation");
         setTimeout(() => {
-          chatWidget.classList.remove("shake-animation");
+          chatButton.classList.remove("shake-animation");
         }, 500);
       }
 
-      const nextInterval =
-        Math.random() * (maxInterval - minInterval) + minInterval;
+      const nextInterval = Math.random() * 1000 + 5000;
       setTimeout(shake, nextInterval);
     }
 
@@ -34,7 +35,6 @@ export function initChatBot(menuItems, foodRecommendations) {
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
     popupText.classList.add("hidden");
-    // Set hasVisited in localStorage when chat is opened
     localStorage.setItem("hasVisited", "true");
   });
 
@@ -44,16 +44,14 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function disableButtons() {
     buttonsEnabled = false;
-    const buttons = chatOptions.querySelectorAll("button");
-    buttons.forEach((button) => {
+    chatOptions.querySelectorAll("button").forEach((button) => {
       button.disabled = true;
     });
   }
 
   function enableButtons() {
     buttonsEnabled = true;
-    const buttons = chatOptions.querySelectorAll("button");
-    buttons.forEach((button) => {
+    chatOptions.querySelectorAll("button").forEach((button) => {
       button.disabled = false;
     });
   }
@@ -67,17 +65,21 @@ export function initChatBot(menuItems, foodRecommendations) {
     addMessage(message, "bot");
   }
 
-  function updateButtons(options) {
+  function updateButtons(options, force = false) {
+    if (!force && currentOptions !== options) {
+      return;
+    }
+    
     chatOptions.innerHTML = "";
     options.forEach((option) => {
       const button = document.createElement("button");
-      button.className =
-        "option-button bg-amber-700 text-white hover:bg-amber-800";
+      button.className = "option-button bg-amber-700 text-white hover:bg-amber-800";
       button.textContent = option;
       button.addEventListener("click", handleOptionClick);
       button.disabled = !buttonsEnabled;
       chatOptions.appendChild(button);
     });
+    currentOptions = options;
   }
 
   function simulateBotTyping() {
@@ -99,24 +101,23 @@ export function initChatBot(menuItems, foodRecommendations) {
     switch (option) {
       case "Покажи меню":
         addMessage("Изберете категория от менюто:", "bot");
-        updateButtons(["Основни ястия", "Салати", "Десерти", "Назад"]);
+        updateButtons(["Основни ястия", "Салати", "Десерти", "Назад"], true);
         break;
       case "Основни ястия":
       case "Салати":
       case "Десерти":
         displayMenuItems(option);
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       case "Препоръки":
         addMessage("Имате ли хранителни предпочитания?", "bot");
-        updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"]);
+        updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"], true);
         break;
       case "Задай въпрос":
         addMessage("Какво искате да знаете за нашата храна?", "bot");
-        updateButtons(["За алергени", "За съставки", "За цени", "Назад"]);
+        updateButtons(["За алергени", "За съставки", "За цени", "Назад"], true);
         break;
       case "Назад":
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
+        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"], true);
         break;
       case "Вегетарианско":
       case "Без глутен":
@@ -126,7 +127,6 @@ export function initChatBot(menuItems, foodRecommendations) {
           `Ето нашите препоръки за вас: ${recommendations.join(", ")}`,
           "bot"
         );
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       default:
         if (option.startsWith("За ")) {
@@ -134,7 +134,6 @@ export function initChatBot(menuItems, foodRecommendations) {
             "Ще ви свържем с наш консултант за повече информация.",
             "bot"
           );
-          updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         }
     }
 
@@ -153,5 +152,5 @@ export function initChatBot(menuItems, foodRecommendations) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
+  updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"], true);
 }

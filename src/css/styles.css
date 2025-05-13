@@ -40,6 +40,22 @@
   transform: rotate(45deg);
 }
 
+.popup-bubble {
+  position: relative;
+}
+
+.popup-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgb(146 64 14);
+}
+
 @keyframes gentle-shake {
   0% {
     transform: translate(0, 0);
