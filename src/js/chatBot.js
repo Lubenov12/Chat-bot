@@ -9,14 +9,11 @@ export function initChatBot(menuItems, foodRecommendations) {
   let buttonsEnabled = true;
   let currentOptions = ["Покажи меню", "Препоръки", "Задай въпрос"];
 
-  const hasVisited = localStorage.getItem("hasVisited");
-  if (!hasVisited) {
-    popupText.classList.remove("hidden");
-  }
+  popupText.classList.remove("hidden");
 
   function startShakeInterval() {
     function shake() {
-      if (chatWindow.classList.contains("hidden") && !hasVisited) {
+      if (chatWindow.classList.contains("hidden")) {
         chatButton.classList.add("shake-animation");
         setTimeout(() => {
           chatButton.classList.remove("shake-animation");
@@ -35,7 +32,6 @@ export function initChatBot(menuItems, foodRecommendations) {
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
     popupText.classList.add("hidden");
-    localStorage.setItem("hasVisited", "true");
   });
 
   closeChat.addEventListener("click", () => {
