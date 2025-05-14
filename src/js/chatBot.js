@@ -6,17 +6,19 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
-  const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
 
-  popupText.classList.remove("hidden");
+  const hasVisited = localStorage.getItem("hasVisited");
+  if (!hasVisited) {
+    popupText.classList.remove("hidden");
+  }
 
   function startShakeInterval() {
     function shake() {
-      if (chatWindow.classList.contains("hidden")) {
-        chatWidget.classList.add("shake-animation");
+      if (chatWindow.classList.contains("hidden") && !hasVisited) {
+        chatButton.classList.add("shake-animation");
         setTimeout(() => {
-          chatWidget.classList.remove("shake-animation");
+          chatButton.classList.remove("shake-animation");
         }, 500);
       }
 
@@ -32,6 +34,7 @@ export function initChatBot(menuItems, foodRecommendations) {
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
     popupText.classList.add("hidden");
+    localStorage.setItem("hasVisited", "true");
   });
 
   closeChat.addEventListener("click", () => {
@@ -62,15 +65,10 @@ export function initChatBot(menuItems, foodRecommendations) {
   }
 
   function updateButtons(options) {
-    if (options[options.length - 1] !== "Назад") {
-      return;
-    }
-
     chatOptions.innerHTML = "";
     options.forEach((option) => {
       const button = document.createElement("button");
-      button.className =
-        "option-button bg-amber-700 text-white hover:bg-amber-800";
+      button.className = "option-button text-white";
       button.textContent = option;
       button.addEventListener("click", handleOptionClick);
       button.disabled = !buttonsEnabled;
@@ -103,6 +101,7 @@ export function initChatBot(menuItems, foodRecommendations) {
       case "Салати":
       case "Десерти":
         displayMenuItems(option);
+        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       case "Препоръки":
         addMessage("Имате ли хранителни предпочитания?", "bot");
@@ -119,17 +118,13 @@ export function initChatBot(menuItems, foodRecommendations) {
       case "Без глутен":
       case "Люто":
         const recommendations = foodRecommendations[option.toLowerCase()];
-        addMessage(
-          `Ето нашите препоръки за вас: ${recommendations.join(", ")}`,
-          "bot"
-        );
+        addMessage(`Ето нашите препоръки за вас: ${recommendations.join(", ")}`, "bot");
+        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       default:
         if (option.startsWith("За ")) {
-          addMessage(
-            "Ще ви свържем с наш консултант за повече информация.",
-            "bot"
-          );
+          addMessage("Ще ви свържем с наш консултант за повече информация.", "bot");
+          updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         }
     }
 
@@ -138,10 +133,7 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement("div");
-    messageDiv.classList.add(
-      "chat-message",
-      sender === "user" ? "user-message" : "bot-message"
-    );
+    messageDiv.classList.add("chat-message", sender === "user" ? "user-message" : "bot-message");
     messageDiv.style.whiteSpace = "pre-line";
     messageDiv.textContent = text;
     chatMessages.appendChild(messageDiv);
