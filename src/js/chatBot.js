@@ -30,7 +30,6 @@ export function initChatBot(menuItems, foodRecommendations) {
   chatButton.addEventListener("click", () => {
     chatWindow.classList.toggle("hidden");
     popupText.classList.add("hidden");
-    localStorage.setItem("hasVisited", "true");
   });
 
   closeChat.addEventListener("click", () => {
