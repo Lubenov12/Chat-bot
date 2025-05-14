@@ -6,7 +6,7 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
-  const chatWidget = document.getElementById("chat-widget")
+  const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
 
   function startShakeInterval() {
