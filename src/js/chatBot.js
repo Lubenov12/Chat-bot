@@ -12,9 +12,9 @@ export function initChatBot(menuItems, foodRecommendations) {
   function startShakeInterval() {
     function shake() {
       if (chatWindow.classList.contains("hidden")) {
-        chatButton.classList.add("shake-animation");
+        chatWidget.classList.add("shake-animation");
         setTimeout(() => {
-          chatButton.classList.remove("shake-animation");
+          chatWidget.classList.remove("shake-animation");
         }, 500);
       }
 
