@@ -133,7 +133,7 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement("div");
-    messageDiv.classList.add("chat-message", sender === "user" ? "user-message" : "bot-message");
+    messageDiv.classList.add("chat-message", sender === "user" ? "user-message" : "bot-message", "text-gray-700");
     messageDiv.style.whiteSpace = "pre-line";
     messageDiv.textContent = text;
     chatMessages.appendChild(messageDiv);
