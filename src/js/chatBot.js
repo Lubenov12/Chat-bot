@@ -55,7 +55,7 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function displayMenuItems(category) {
     const items = menuItems[category];
-    let message = `${category}:\n\n`;
+    let message = `🥗 Това са 3-те най-предпочитани ${category} от нашите клиенти:\n\n`;
     items.forEach((item) => {
       message += `${item.name} - ${item.price}\n${item.description}\n\n`;
     });
@@ -99,7 +99,6 @@ export function initChatBot(menuItems, foodRecommendations) {
       case "Салати":
       case "Десерти":
         displayMenuItems(option);
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
         break;
       case "Препоръки":
         addMessage("Имате ли хранителни предпочитания?", "bot");
@@ -116,12 +115,18 @@ export function initChatBot(menuItems, foodRecommendations) {
       case "Без глутен":
       case "Люто":
         const recommendations = foodRecommendations[option.toLowerCase()];
-        addMessage(`Ето нашите препоръки за вас: ${recommendations.join(", ")}`, "bot");
+        addMessage(
+          `Ето нашите препоръки за вас: ${recommendations.join(", ")}`,
+          "bot"
+        );
         updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"]);
         break;
       default:
         if (option.startsWith("За ")) {
-          addMessage("Ще ви свържем с наш консултант за повече информация.", "bot");
+          addMessage(
+            "Ще ви свържем с наш консултант за повече информация.",
+            "bot"
+          );
           updateButtons(["За алергени", "За съставки", "За цени", "Назад"]);
         }
     }
@@ -131,7 +136,11 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement("div");
-    messageDiv.classList.add("chat-message", sender === "user" ? "user-message" : "bot-message", "text-gray-700");
+    messageDiv.classList.add(
+      "chat-message",
+      sender === "user" ? "user-message" : "bot-message",
+      "text-gray-700"
+    );
     messageDiv.style.whiteSpace = "pre-line";
     messageDiv.textContent = text;
     chatMessages.appendChild(messageDiv);
