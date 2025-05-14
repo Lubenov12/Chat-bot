@@ -6,6 +6,7 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
+  const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
 
   popupText.classList.remove("hidden");
@@ -13,9 +14,9 @@ export function initChatBot(menuItems, foodRecommendations) {
   function startShakeInterval() {
     function shake() {
       if (chatWindow.classList.contains("hidden")) {
-        chatButton.classList.add("shake-animation");
+        chatWidget.classList.add("shake-animation");
         setTimeout(() => {
-          chatButton.classList.remove("shake-animation");
+          chatWidget.classList.remove("shake-animation");
         }, 500);
       }
 
@@ -64,11 +65,12 @@ export function initChatBot(menuItems, foodRecommendations) {
     if (options[options.length - 1] !== "Назад") {
       return;
     }
-    
+
     chatOptions.innerHTML = "";
     options.forEach((option) => {
       const button = document.createElement("button");
-      button.className = "option-button bg-amber-700 text-white hover:bg-amber-800";
+      button.className =
+        "option-button bg-amber-700 text-white hover:bg-amber-800";
       button.textContent = option;
       button.addEventListener("click", handleOptionClick);
       button.disabled = !buttonsEnabled;
