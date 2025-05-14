@@ -9,6 +9,9 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatWidget = document.getElementById("chat-widget");
   let buttonsEnabled = true;
 
+  // Show popup text initially
+  popupText.classList.remove("hidden");
+
   function startShakeInterval() {
     function shake() {
       if (chatWindow.classList.contains("hidden")) {
