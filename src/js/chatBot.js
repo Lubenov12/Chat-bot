@@ -6,16 +6,12 @@ export function initChatBot(menuItems, foodRecommendations) {
   const chatMessages = document.getElementById("chat-messages");
   const chatOptions = document.getElementById("chat-options");
   const popupText = document.getElementById("popup-text");
+  const chatWidget = document.getElementById("chat-widget")
   let buttonsEnabled = true;
-
-  const hasVisited = localStorage.getItem("hasVisited");
-  if (!hasVisited) {
-    popupText.classList.remove("hidden");
-  }
 
   function startShakeInterval() {
     function shake() {
-      if (chatWindow.classList.contains("hidden") && !hasVisited) {
+      if (chatWindow.classList.contains("hidden")) {
         chatButton.classList.add("shake-animation");
         setTimeout(() => {
           chatButton.classList.remove("shake-animation");
