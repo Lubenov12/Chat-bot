@@ -117,12 +117,12 @@ export function initChatBot(menuItems, foodRecommendations) {
       case "Люто":
         const recommendations = foodRecommendations[option.toLowerCase()];
         addMessage(`Ето нашите препоръки за вас: ${recommendations.join(", ")}`, "bot");
-        updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
+        updateButtons(["Вегетарианско", "Без глутен", "Люто", "Назад"]);
         break;
       default:
         if (option.startsWith("За ")) {
           addMessage("Ще ви свържем с наш консултант за повече информация.", "bot");
-          updateButtons(["Покажи меню", "Препоръки", "Задай въпрос"]);
+          updateButtons(["За алергени", "За съставки", "За цени", "Назад"]);
         }
     }
 
