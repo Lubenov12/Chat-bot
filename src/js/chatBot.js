@@ -55,7 +55,7 @@ export function initChatBot(menuItems, foodRecommendations) {
 
   function displayMenuItems(category) {
     const items = menuItems[category];
-    let message = `🥗 Това са 3-те най-предпочитани ${category} от нашите клиенти:\n\n`;
+    let message = `Това са 3-те най-предпочитани ${category} от нашите клиенти:\n\n`;
     items.forEach((item) => {
       message += `${item.name} - ${item.price}\n${item.description}\n\n`;
     });
